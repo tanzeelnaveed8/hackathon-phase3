@@ -19,6 +19,13 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       rightIcon,
       className = "",
       id,
+      onDrag,
+      onDragStart,
+      onDragEnd,
+      onDragEnter,
+      onDragLeave,
+      onDragOver,
+      onDrop,
       ...props
     },
     ref
@@ -56,11 +63,10 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
               {leftIcon}
             </div>
           )}
-          <motion.input
+          <input
             ref={ref}
             id={inputId}
             className={combinedClassName}
-            whileFocus={{ scale: 1.01 }}
             {...props}
           />
           {rightIcon && (
