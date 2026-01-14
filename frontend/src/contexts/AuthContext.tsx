@@ -6,6 +6,7 @@
 
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 
+// Type definitions
 interface User {
   id: string;
   email: string;
@@ -20,6 +21,7 @@ interface AuthContextType {
   signOut: () => void;
 }
 
+// Create context
 const AuthContext = createContext<AuthContextType>({
   user: null,
   loading: true,
@@ -28,12 +30,15 @@ const AuthContext = createContext<AuthContextType>({
   signOut: () => {},
 });
 
+// Use environment variable for backend API
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8001';
+
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
+  // Load user from localStorage on mount
   useEffect(() => {
-    // Load user from localStorage on mount
     const storedUser = localStorage.getItem('user');
     const storedToken = localStorage.getItem('token');
 
@@ -46,11 +51,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const signUp = async (name: string, email: string, password: string) => {
     try {
-      const response = await fetch('http://localhost:8001/api/auth/signup', {
+      const response = await fetch(`${API_URL}/api/auth/signup`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, email, password }),
       });
 
@@ -61,13 +64,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       const data = await response.json();
 
-      const userData = {
-        id: data.user_id,
-        email: data.email,
-        name: data.name,
-      };
+      const userData = { id: data.user_id, email: data.email, name: data.name };
 
-      // Store user and token
       localStorage.setItem('user', JSON.stringify(userData));
       localStorage.setItem('token', data.access_token);
 
@@ -80,11 +78,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const signIn = async (email: string, password: string) => {
     try {
-      const response = await fetch('http://localhost:8001/api/auth/login', {
+      const response = await fetch(`${API_URL}/api/auth/login`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
       });
 
@@ -94,14 +90,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
 
       const data = await response.json();
+      const userData = { id: data.user_id, email: data.email, name: data.name };
 
-      const userData = {
-        id: data.user_id,
-        email: data.email,
-        name: data.name,
-      };
-
-      // Store user and token
       localStorage.setItem('user', JSON.stringify(userData));
       localStorage.setItem('token', data.access_token);
 
@@ -125,4 +115,5 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   );
 }
 
+// Hook to use auth context
 export const useAuth = () => useContext(AuthContext);
