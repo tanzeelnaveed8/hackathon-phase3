@@ -1,35 +1,40 @@
 <!--
-Sync Impact Report - Constitution v1.0.0
+Sync Impact Report - Constitution v1.1.0
 ========================================
-Version Change: Initial → 1.0.0
-Ratification Date: 2026-01-08
-Last Amended: 2026-01-08
+Version Change: 1.0.0 → 1.1.0
+Ratification Date: 2026-01-08 (unchanged)
+Last Amended: 2026-01-15
 
 Changes:
-- Initial constitution created with 14 non-negotiable rules
-- Added 6 core principles covering technology stack, security, and architecture
-- Defined development workflow requirements
-- Established governance rules
+- Added Phase III AI/MCP integration requirements
+- Updated project title to reflect Phase II → Phase III upgrade path
+- Added Principle VII: AI & MCP Integration (8 non-negotiable rules)
+- Clarified user identity derivation rules (JWT only, never from request body/URL)
+- Added backward compatibility requirement for Phase II APIs
+
+Principles Modified:
+- Title updated: "Phase II (Full-Stack)" → "Phase II → Phase III (AI-Powered)"
+- No existing principles removed or redefined
 
 Principles Added:
-- I. Technology Stack (Backend, Database, ORM, Auth, Frontend)
-- II. Security & Authentication
-- III. Architecture & Structure
-- IV. Development Workflow
-- V. Configuration Management
-- VI. Specification Compliance
+- VII. AI & MCP Integration (NEW)
+  - MCP tools must be stateless and DB-backed
+  - AI interacts only through MCP tools
+  - OpenAI Agents SDK required
+  - No breaking changes to Phase II APIs
+  - User identity from JWT only
 
 Templates Status:
-✅ spec-template.md - Reviewed, compatible with constitution requirements
-✅ plan-template.md - Reviewed, constitution check section aligns
-✅ tasks-template.md - Reviewed, task structure supports principles
-⚠ Commands - May need updates to enforce constitution checks
+✅ spec-template.md - Compatible, no changes needed
+✅ plan-template.md - Constitution check section will validate Phase III principles
+✅ tasks-template.md - Task structure supports AI/MCP implementation phases
+✅ Commands - Will enforce Phase III constitution checks
 
 Follow-up TODOs:
 - None - all placeholders filled
 -->
 
-# Hackathon Todo – Phase II (Full-Stack) Constitution
+# Hackathon Todo – Phase II → Phase III (AI-Powered) Constitution
 
 ## Core Principles
 
@@ -64,12 +69,18 @@ Follow-up TODOs:
 - Every data access operation MUST verify the requesting user owns or has permission to access the resource
 - No operation may bypass ownership checks
 
+**User Identity Derivation:**
+- User identity MUST be derived ONLY from JWT tokens
+- User identity MUST NEVER be accepted from request body parameters
+- User identity MUST NEVER be accepted from URL path parameters
+- The authenticated user from JWT is the sole source of truth for user identity
+
 **Credential Management:**
 - No hardcoded credentials are allowed outside environment variables
 - All secrets MUST be stored in `.env` files (never committed)
 - Connection strings, API keys, and tokens MUST use environment variables
 
-**Rationale**: Security is non-negotiable. Passwordless JWT auth provides modern security without password management overhead. User ownership enforcement prevents unauthorized data access. Environment variables prevent credential leaks.
+**Rationale**: Security is non-negotiable. Passwordless JWT auth provides modern security without password management overhead. User ownership enforcement prevents unauthorized data access. Deriving user identity exclusively from JWT prevents identity spoofing attacks. Environment variables prevent credential leaks.
 
 ### III. Architecture & Structure (NON-NEGOTIABLE)
 
@@ -126,13 +137,44 @@ Follow-up TODOs:
 
 **Rationale**: Specification compliance ensures the system meets requirements. Traceability enables impact analysis and requirement validation.
 
+### VII. AI & MCP Integration (NON-NEGOTIABLE)
+
+**Phase III Requirements:**
+- Phase III MUST add AI-powered chatbot functionality using OpenAI Agents SDK
+- AI integration MUST use Model Context Protocol (MCP) architecture
+- Phase III MUST integrate cleanly on top of Phase II without breaking existing functionality
+
+**MCP Tool Requirements:**
+- All MCP tools MUST be stateless (no in-memory state between invocations)
+- MCP tools MUST persist all data in the database using SQLModel
+- MCP tools MUST derive user identity from JWT tokens only
+- MCP tools MUST enforce the same user ownership rules as REST APIs
+
+**AI Interaction Constraints:**
+- AI agents MUST interact with the system ONLY through MCP tools
+- AI agents MUST NOT directly access the database
+- AI agents MUST NOT bypass authentication or authorization checks
+- AI agents MUST operate within the same security boundaries as human users
+
+**Backward Compatibility:**
+- Phase II REST APIs MUST remain fully functional and unchanged
+- Existing frontend functionality MUST continue to work without modification
+- Phase III additions MUST NOT introduce breaking changes to Phase II components
+
+**Technology Constraints:**
+- AI functionality MUST use OpenAI Agents SDK
+- Chatbot UI MUST use ChatKit or equivalent conversational UI components
+- No alternative AI frameworks are permitted without explicit justification
+
+**Rationale**: Phase III extends Phase II with AI capabilities while maintaining system integrity. Stateless MCP tools ensure backend remains stateless and scalable. Enforcing user identity from JWT prevents AI-based security bypasses. Backward compatibility protects existing functionality and user experience. MCP architecture provides clean separation between AI logic and system operations.
+
 ## Development Workflow
 
 **Pre-Implementation Requirements:**
 1. Read the feature specification from `/specs/[feature-name]/spec.md`
 2. Review the implementation plan from `/specs/[feature-name]/plan.md`
 3. Understand the task context from `/specs/[feature-name]/tasks.md`
-4. Verify the change aligns with constitution principles
+4. Verify the change aligns with constitution principles (including Phase III if applicable)
 
 **Implementation Requirements:**
 1. Make the smallest viable change to satisfy the requirement
@@ -140,12 +182,14 @@ Follow-up TODOs:
 3. Use environment variables for all configuration
 4. Test the change against specification acceptance criteria
 5. Document any architectural decisions in ADRs
+6. For Phase III: Ensure MCP tools are stateless and DB-backed
 
 **Post-Implementation Requirements:**
 1. Verify no hardcoded credentials were introduced
 2. Confirm all API routes enforce user ownership
 3. Validate against specification success criteria
 4. Create or update Prompt History Records (PHRs)
+5. For Phase III: Verify backward compatibility with Phase II
 
 ## Technology Constraints
 
@@ -156,6 +200,8 @@ Follow-up TODOs:
 - ❌ No alternative authentication systems (only Better Auth)
 - ❌ No alternative frontend frameworks (only Next.js 16+)
 - ❌ No alternative ports for backend (only 8001)
+- ❌ No alternative AI frameworks for Phase III (only OpenAI Agents SDK)
+- ❌ No stateful MCP tools (must be stateless and DB-backed)
 
 **Failure to follow any constraint is considered an invalid implementation.**
 
@@ -184,4 +230,4 @@ Follow-up TODOs:
 - Simpler alternatives MUST be documented and explained why rejected
 - Unjustified complexity MUST be removed
 
-**Version**: 1.0.0 | **Ratified**: 2026-01-08 | **Last Amended**: 2026-01-08
+**Version**: 1.1.0 | **Ratified**: 2026-01-08 | **Last Amended**: 2026-01-15

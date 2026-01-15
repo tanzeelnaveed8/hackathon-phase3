@@ -36,6 +36,16 @@ class Settings:
     PORT: int = int(os.getenv("PORT", "8001"))
     DEBUG: bool = os.getenv("DEBUG", "False").lower() == "true"
 
+    # Phase III AI Configuration
+    OPENAI_API_KEY: str = os.getenv(
+        "OPENAI_API_KEY",
+        ""
+    )
+    OPENAI_MODEL: str = os.getenv(
+        "OPENAI_MODEL",
+        "gpt-4o-mini"
+    )
+
     @property
     def allowed_origins_list(self) -> list[str]:
         """Parse ALLOWED_ORIGINS into a list."""

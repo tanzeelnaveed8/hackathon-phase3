@@ -1,7 +1,7 @@
 'use client';
 
 import { motion, AnimatePresence } from 'framer-motion';
-import { CheckSquare, X, User, LogOut } from 'lucide-react';
+import { CheckSquare, X, User, LogOut, MessageSquare } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
@@ -23,6 +23,11 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
       name: 'Tasks',
       href: '/tasks',
       icon: CheckSquare,
+    },
+    {
+      name: 'AI Chat',
+      href: '/chat',
+      icon: MessageSquare,
     },
   ];
 

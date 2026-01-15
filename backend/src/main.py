@@ -38,9 +38,10 @@ async def health_check():
 
 
 # Import and register routers
-from .api.routes import tasks, auth
+from .api.routes import tasks, auth, chat
 app.include_router(tasks.router)
 app.include_router(auth.router)
+app.include_router(chat.router)
 
 if __name__ == "__main__":
     import uvicorn

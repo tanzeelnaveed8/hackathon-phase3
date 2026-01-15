@@ -81,23 +81,36 @@ select {
   outline-offset: 2px;
 }
 
-/* Custom scrollbar for dark mode */
+/* Custom scrollbar for dark mode - Modern & Subtle */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 10px;
+  height: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--background-secondary);
+  background: transparent;
+  margin: 4px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--border-default);
-  border-radius: 4px;
+  background: linear-gradient(180deg, rgba(99, 102, 241, 0.3) 0%, rgba(139, 92, 246, 0.3) 100%);
+  border-radius: 10px;
+  border: 2px solid var(--background-primary);
+  transition: background 0.2s ease;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--text-muted);
+  background: linear-gradient(180deg, rgba(99, 102, 241, 0.5) 0%, rgba(139, 92, 246, 0.5) 100%);
+}
+
+::-webkit-scrollbar-thumb:active {
+  background: linear-gradient(180deg, rgba(99, 102, 241, 0.7) 0%, rgba(139, 92, 246, 0.7) 100%);
+}
+
+/* Firefox scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(99, 102, 241, 0.3) transparent;
 }
 
 @layer utilities {

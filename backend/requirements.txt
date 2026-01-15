@@ -8,6 +8,11 @@ pydantic==2.5.3
 alembic==1.13.1
 python-dotenv==1.0.0
 
+# Phase III AI/MCP dependencies
+openai==1.54.0
+dateparser==1.2.0
+rapidfuzz==3.10.0
+
 # Development dependencies
 pytest==7.4.4
 httpx==0.26.0
