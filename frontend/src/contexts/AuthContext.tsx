@@ -31,7 +31,7 @@ const AuthContext = createContext<AuthContextType>({
 });
 
 // Use environment variable for backend API
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8001';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://huggingface.co/spaces/taneelnaveed8/backend-phase3';
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
